@@ -44,15 +44,21 @@ Authorization must not trust caller-provided identity, tenant, or role headers.
 | Identity | Record | Expected status | Reason |
 |---|---|---:|---|
 | No token | record_a1 | 401 | Authentication required |
+| Invalid token | record_a1 | 401 | Invalid bearer token |
 | member_a | record_a1 | 200 | Own record |
+| member_a | record_a3 | 200 | Own record |
 | member_a | record_a2 | 404 | Different owner |
 | member_a | record_b1 | 404 | Different tenant |
 | admin_a | record_a1 | 200 | Same tenant |
 | admin_a | record_a2 | 200 | Same tenant |
 | admin_a | record_b1 | 404 | Different tenant |
+| member_b | record_a1 | 404 | Different tenant |
 | member_b | record_b1 | 200 | Own record |
+| admin_b | record_a1 | 404 | Different tenant |
 | admin_b | record_b1 | 200 | Same tenant |
+| admin_b | record_b2 | 200 | Same tenant |
 | Any valid identity | nonexistent ID | 404 | Record does not exist |
+| member_a with spoofed identity/tenant/role headers | record_b1 | 404 | Headers are not trusted |
 
 ## Vulnerability demonstration requirements
 
