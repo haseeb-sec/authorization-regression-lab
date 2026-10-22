@@ -122,7 +122,7 @@ do not expect the entire suite to pass unchanged with `AUTHZ_MODE=vulnerable`.
 
 Verified locally:
 
-- Corrected mode: **28 tests passed**.
+- Corrected mode: **31 tests passed**.
 - Vulnerable BOLA assertions: **5 failed, 9 passed**; the five failures
   exposed inaccessible records returning `200` instead of `404`.
 - Vulnerable BFLA role assertions: **3 failed, 3 passed**; the three failures
