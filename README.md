@@ -56,10 +56,12 @@ mapping instead of trusting those headers.
 - FastAPI
 - pytest
 - FastAPI `TestClient`
+- Plain HTML, CSS, and JavaScript frontend served by FastAPI
 - Synthetic in-memory identities and records
 
-The lab does not use a database, frontend, production identity provider,
-or real user credentials.
+The lab does not use a database, production identity provider, or real
+user credentials. The frontend sends requests to the API; authorization
+decisions remain the backend's responsibility.
 
 ## Run locally
 
@@ -82,10 +84,15 @@ Run the API locally for manual exploration:
 AUTHZ_MODE=corrected python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-The API is then available at `http://127.0.0.1:8000`. Interactive API
+The frontend is available at `http://127.0.0.1:8000/`. Interactive API
 documentation is available at `http://127.0.0.1:8000/docs`.
 
-Use only synthetic data and keep the server bound to loopback.
+Use the page to select a synthetic identity, request a record, or call
+the administrator summary endpoint. It displays the actual HTTP status
+and response body returned by the API; it does not simulate authorization.
+
+Use only synthetic data and keep the server bound to loopback. Never run
+the vulnerable mode as a network-accessible server.
 
 ## Reproduce the vulnerable behavior
 
@@ -153,5 +160,6 @@ The current stage focuses on two API authorization failure classes:
 1. BOLA: record-level ownership and tenant isolation
 2. BFLA: administrator-only function access
 
-Database integration, a frontend, deployment, and additional authorization
-scenarios are intentionally deferred until this evidence is reviewed.
+Database integration, deployment, and additional authorization scenarios
+remain out of scope for this stage. The small frontend is for local
+demonstration only, not a production interface.

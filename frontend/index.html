@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local-only authorization regression learning lab">
+  <title>Authorization Regression Lab</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">SECURITY ENGINEERING · LOCAL LAB</p>
+      <h1>Authorization Regression Lab</h1>
+      <p class="subtitle">Explore how an API enforces record ownership, tenant boundaries, and administrator permissions.</p>
+    </div>
+    <span class="environment">LOCAL TEST ENVIRONMENT</span>
+  </header>
+
+  <main>
+    <section class="notice" aria-label="Safety notice">
+      <strong>Synthetic data only.</strong>
+      This interface is intended for local testing. Never expose vulnerable mode to a network.
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / IDENTITY</p>
+          <h2>Choose a test identity</h2>
+        </div>
+      </div>
+      <label for="identity">Bearer token identity</label>
+      <select id="identity">
+        <option value="member_a">Member A · Tenant A</option>
+        <option value="admin_a">Administrator A · Tenant A</option>
+        <option value="member_b">Member B · Tenant B</option>
+        <option value="admin_b">Administrator B · Tenant B</option>
+      </select>
+      <p class="help">The selected identity uses a predefined synthetic token. No real account is involved.</p>
+    </section>
+
+    <div class="action-grid">
+      <section class="panel">
+        <p class="eyebrow">02 / BOLA</p>
+        <h2>Request a record</h2>
+        <p class="description">Test whether the selected identity can read a specific record.</p>
+        <form id="record-form">
+          <label for="record-id">Record ID</label>
+          <select id="record-id">
+            <option value="record_a1">record_a1 · Tenant A · Member A</option>
+            <option value="record_a2">record_a2 · Tenant A · Other owner</option>
+            <option value="record_a3">record_a3 · Tenant A · Member A</option>
+            <option value="record_b1">record_b1 · Tenant B · Member B</option>
+            <option value="record_b2">record_b2 · Tenant B · Member B</option>
+            <option value="record_missing">record_missing · Does not exist</option>
+          </select>
+          <button type="submit">Send record request</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">03 / BFLA</p>
+        <h2>Request admin summary</h2>
+        <p class="description">Test whether the selected identity can call the administrator-only endpoint.</p>
+        <button id="summary-button" type="button">Send summary request</button>
+      </section>
+    </div>
+
+    <section class="panel response-panel" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">04 / HTTP RESPONSE</p>
+          <h2>Request result</h2>
+        </div>
+        <span id="response-status" class="status">No request yet</span>
+      </div>
+      <p id="response-message" class="help">Send a request to see the API's actual HTTP status and response body.</p>
+      <pre id="response-body"><code>Waiting for a request…</code></pre>
+    </section>
+  </main>
+
+  <footer>
+    Authorization decisions belong to the API, not this interface.
+  </footer>
+</body>
+</html>

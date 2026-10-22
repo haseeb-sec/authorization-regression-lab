@@ -1,7 +1,10 @@
 import os
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 app = FastAPI(
@@ -9,6 +12,15 @@ app = FastAPI(
     description="A local learning lab for testing API authorization.",
     version="0.1.0",
 )
+
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
+
+@app.get("/", include_in_schema=False)
+def frontend_home() -> FileResponse:
+    return FileResponse(FRONTEND_DIR / "index.html")
+
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
