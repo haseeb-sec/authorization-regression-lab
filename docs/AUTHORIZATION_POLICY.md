@@ -94,6 +94,23 @@ For `GET /admin/summary`:
 
 The vulnerable-mode results above are intentional demonstrations of the missing role check, not acceptable authorization behavior.
 
+## Demonstration frontend
+
+A small plain HTML, CSS, and JavaScript frontend is served by FastAPI
+for local demonstration.
+
+- It lets users select one of the fixed synthetic identities, request a
+  record, and request the administrator summary.
+- It sends actual HTTP requests using the corresponding synthetic Bearer
+  token and displays the returned status and response body.
+- It is a demonstration and observability layer, not a security boundary.
+  All authorization decisions must remain enforced by the backend.
+- The frontend and API must be used with synthetic data on loopback only.
+  The deliberately vulnerable mode must never be exposed to a network.
+
+The frontend does not implement real authentication and does not replace
+the black-box HTTP regression tests.
+
 ## Corrected and vulnerable modes
 
 The same black-box HTTP test suite must support two local modes, selected through `AUTHZ_MODE`:
@@ -127,6 +144,5 @@ The vulnerable mode must remain local-only and must never be publicly exposed.
 
 - Database and migrations
 - Real passwords, login, JWT, or OAuth
-- Frontend
 - Additional resource types or authorization scenarios beyond the current BOLA and BFLA slices
 - Deployment or public hosting
