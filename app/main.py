@@ -117,3 +117,25 @@ def get_record(
             raise HTTPException(status_code=404, detail="Record not found")
 
     return record
+
+
+@app.get("/admin/summary")
+def get_admin_summary(
+    identity: Annotated[dict[str, str], Depends(get_current_identity)],
+) -> dict[str, str | int]:
+    if AUTHZ_MODE == "corrected" and identity["role"] != "tenant_admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Administrator role required",
+        )
+
+    tenant_records = [
+        record
+        for record in RECORDS.values()
+        if record["tenant_id"] == identity["tenant_id"]
+    ]
+
+    return {
+        "tenant_id": identity["tenant_id"],
+        "record_count": len(tenant_records),
+    }
